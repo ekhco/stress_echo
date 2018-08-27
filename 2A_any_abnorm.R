@@ -15,7 +15,7 @@ library(foreign)
 library(epiR)
 library(stringr)
 
-setwd("~/QSU/stress")
+setwd("~/QSU/stress_echo")
 source("~/QSU/qsu.R")
 
 # read dataset from QSU server
@@ -169,24 +169,199 @@ get_est <- function(table, stat= "se", est = 1) {
 
                    # the labels -----------
 labeltext <- cbind(c("Sensitivity",
-                     "Echo",
-                     "ECG",
-                     "Combined",
+                     "Stress echo",
+                     "Stress ECG",
+                     "Comprehensive",
 
                      "Specificity",
-                     "Echo",
-                     "ECG",
-                     "Combined",
+                     "Stress echo",
+                     "Stress ECG",
+                     "Comprehensive",
 
                      "PPV",
-                     "Echo",
-                     "ECG",
-                     "Combined",
+                     "Stress echo",
+                     "Stress ECG",
+                     "Comprehensive",
 
                      "NPV",
-                     "Echo",
-                     "ECG",
-                     "Combined"
+                     "Stress echo",
+                     "Stress ECG",
+                     "Comprehensive"
+                     ),
+
+                   # the data ------------
+                   c("Both sexes [95% CI]",
+                    get_stat(t_any_echo, "se"),
+                    get_stat(t_any_ecg, "se"),
+                    get_stat(t_any_comp, "se"),
+
+                    "",
+                    get_stat(t_any_echo, "sp"),
+                    get_stat(t_any_ecg, "sp"),
+                    get_stat(t_any_comp, "sp"),
+
+                    "",
+                    get_stat(t_any_echo, "ppv"),
+                    get_stat(t_any_ecg, "ppv"),
+                    get_stat(t_any_comp, "ppv"),
+
+                    "",
+                    get_stat(t_any_echo, "npv"),
+                    get_stat(t_any_ecg, "npv"),
+                    get_stat(t_any_comp, "npv")
+                     ))
+
+mean_points_m <-  c(NA,
+        get_est(tm_any_echo, stat="se", est =1),
+        get_est(tm_any_ecg, stat="se", est =1),
+        get_est(tm_any_comp, stat="se", est =1),
+
+        NA,
+        get_est(tm_any_echo, stat="sp", est =1),
+        get_est(tm_any_ecg, stat="sp", est =1),
+        get_est(tm_any_comp, stat="sp", est =1),
+
+        NA,
+        get_est(tm_any_echo, stat="ppv", est =1),
+        get_est(tm_any_ecg, stat="ppv", est =1),
+        get_est(tm_any_comp, stat="ppv", est =1),
+
+        NA,
+        get_est(tm_any_echo, stat="npv", est =1),
+        get_est(tm_any_ecg, stat="npv", est =1),
+        get_est(tm_any_comp, stat="npv", est =1)
+       )
+
+mean_points_f <-  c(NA,
+       get_est(tf_any_echo, stat="se", est =1),
+       get_est(tf_any_ecg, stat="se", est =1),
+       get_est(tf_any_comp, stat="se", est =1),
+
+       NA,
+       get_est(tf_any_echo, stat="sp", est =1),
+       get_est(tf_any_ecg, stat="sp", est =1),
+       get_est(tf_any_comp, stat="sp", est =1),
+
+       NA,
+       get_est(tf_any_echo, stat="ppv", est =1),
+       get_est(tf_any_ecg, stat="ppv", est =1),
+       get_est(tf_any_comp, stat="ppv", est =1),
+
+       NA,
+       get_est(tf_any_echo, stat="npv", est =1),
+       get_est(tf_any_ecg, stat="npv", est =1),
+       get_est(tf_any_comp, stat="npv", est =1)
+      )
+
+
+
+
+
+lower_points_m <-  c(NA,
+       get_est(tm_any_echo, stat="se", est =2),
+       get_est(tm_any_ecg, stat="se", est =2),
+       get_est(tm_any_comp, stat="se", est =2),
+
+       NA,
+       get_est(tm_any_echo, stat="sp", est =2),
+       get_est(tm_any_ecg, stat="sp", est =2),
+       get_est(tm_any_comp, stat="sp", est =2),
+
+       NA,
+       get_est(tm_any_echo, stat="ppv", est =2),
+       get_est(tm_any_ecg, stat="ppv", est =2),
+       get_est(tm_any_comp, stat="ppv", est =2),
+
+       NA,
+       get_est(tm_any_echo, stat="npv", est =2),
+       get_est(tm_any_ecg, stat="npv", est =2),
+       get_est(tm_any_comp, stat="npv", est =2)
+      )
+
+lower_points_f <-  c(NA,
+     get_est(tf_any_echo, stat="se", est =2),
+     get_est(tf_any_ecg, stat="se", est =2),
+     get_est(tf_any_comp, stat="se", est =2),
+
+     NA,
+     get_est(tf_any_echo, stat="sp", est =2),
+     get_est(tf_any_ecg, stat="sp", est =2),
+     get_est(tf_any_comp, stat="sp", est =2),
+
+     NA,
+     get_est(tf_any_echo, stat="ppv", est =2),
+     get_est(tf_any_ecg, stat="ppv", est =2),
+     get_est(tf_any_comp, stat="ppv", est =2),
+
+     NA,
+     get_est(tf_any_echo, stat="npv", est =2),
+     get_est(tf_any_ecg, stat="npv", est =2),
+     get_est(tf_any_comp, stat="npv", est =2)
+    )
+
+
+
+upper_points_m <-  c(NA,
+      get_est(tm_any_echo, stat="se", est =3),
+      get_est(tm_any_ecg, stat="se", est =3),
+      get_est(tm_any_comp, stat="se", est =3),
+
+      NA,
+      get_est(tm_any_echo, stat="sp", est =3),
+      get_est(tm_any_ecg, stat="sp", est =3),
+      get_est(tm_any_comp, stat="sp", est =3),
+
+      NA,
+      get_est(tm_any_echo, stat="ppv", est =3),
+      get_est(tm_any_ecg, stat="ppv", est =3),
+      get_est(tm_any_comp, stat="ppv", est =3),
+
+      NA,
+      get_est(tm_any_echo, stat="npv", est =3),
+      get_est(tm_any_ecg, stat="npv", est =3),
+      get_est(tm_any_comp, stat="npv", est =3)
+     )
+
+ upper_points_f <-  c(NA,
+       get_est(tf_any_echo, stat="se", est =3),
+       get_est(tf_any_ecg, stat="se", est =3),
+       get_est(tf_any_comp, stat="se", est =3),
+
+       NA,
+       get_est(tf_any_echo, stat="sp", est =3),
+       get_est(tf_any_ecg, stat="sp", est =3),
+       get_est(tf_any_comp, stat="sp", est =3),
+
+       NA,
+       get_est(tf_any_echo, stat="ppv", est =3),
+       get_est(tf_any_ecg, stat="ppv", est =3),
+       get_est(tf_any_comp, stat="ppv", est =3),
+
+       NA,
+       get_est(tf_any_echo, stat="npv", est =3),
+       get_est(tf_any_ecg, stat="npv", est =3),
+       get_est(tf_any_comp, stat="npv", est =3)
+      )
+                   # the labels -----------
+labeltext <- cbind(c("Sensitivity",
+                     "Stress echo",
+                     "Stress ECG",
+                     "Comprehensive",
+
+                     "Specificity",
+                     "Stress echo",
+                     "Stress ECG",
+                     "Comprehensive",
+
+                     "PPV",
+                     "Stress echo",
+                     "Stress ECG",
+                     "Comprehensive",
+
+                     "NPV",
+                     "Stress echo",
+                     "Stress ECG",
+                     "Comprehensive"
                      ),
 
                    # the data ------------
@@ -345,22 +520,45 @@ upper_points_m <-  c(NA,
 
 
 # ------------------------------------------------------------------------------
-pdf("figs/fig2A_any_abnormality.pdf")
+pdf("figs/fig2A_any_abnormality_color.pdf")
 
+    par(mfrow=c(1,1))
     forestplot(labeltext = labeltext,
-        mean  = cbind(mean_points_m,mean_points_f),
-        lower = cbind(lower_points_m,lower_points_f),
-        upper = cbind(upper_points_m,upper_points_f),
+        mean  = cbind(mean_points_f, mean_points_m),
+        lower = cbind(lower_points_f, lower_points_m),
+        upper = cbind(upper_points_f, upper_points_m),
         is.summary = c(TRUE, rep(FALSE,3),TRUE, rep(FALSE,3),TRUE, rep(FALSE,3),TRUE, rep(FALSE,3)),
         graph.pos="right",
         xlab = "Proportion",
-        title = "Diagnostic Properties of Stress Testing: Any Abnormality",
-        legend = c("male","female"),
-        fn.ci_norm = c(fpDrawNormalCI, fpDrawCircleCI),
+        title = "", #"Diagnostic Properties of Stress Testing: Any Abnormality",
+        legend = c("female", "male"),
+        fn.ci_norm = c(fpDrawCircleCI, fpDrawNormalCI),
         line.margin=0.25, colgap = unit(4,"mm"), graphwidth = unit(60,"mm"),
         hrzl_lines = TRUE,
-        lwd.ci = 1.4, lty.ci = c(1,5),  ci.vertices = TRUE, ci.vertices.height = 0.03,
-        col = fpColors(lines=c("dodgerblue3","tomato"), box=c("dodgerblue3","tomato")),
+        lwd.ci = 1.4, lty.ci = c(5,1),  ci.vertices = TRUE, ci.vertices.height = 0.03,
+        col = fpColors(lines=c("tomato", "dodgerblue3"), box=c("tomato", "dodgerblue3")),
+        grid = TRUE,
+        zero = 1, lwd.zero = 1.2,
+        boxsize = 0.18, xticks = (0:10/10), xtick.digits=1)
+
+dev.off()
+
+pdf("figs/fig2A_any_abnormality_bw.pdf")
+
+    forestplot(labeltext = labeltext,
+        mean  = cbind(mean_points_f, mean_points_m),
+        lower = cbind(lower_points_f, lower_points_m),
+        upper = cbind(upper_points_f, upper_points_m),
+        is.summary = c(TRUE, rep(FALSE,3),TRUE, rep(FALSE,3),TRUE, rep(FALSE,3),TRUE, rep(FALSE,3)),
+        graph.pos="right",
+        xlab = "Proportion",
+        title = "", #"Diagnostic Properties of Stress Testing: Any Abnormality",
+        legend = c("female", "male"),
+        fn.ci_norm = c(fpDrawCircleCI, fpDrawNormalCI),
+        line.margin=0.25, colgap = unit(4,"mm"), graphwidth = unit(60,"mm"),
+        hrzl_lines = TRUE,
+        lwd.ci = 1.4, lty.ci = c(5,1),  ci.vertices = TRUE, ci.vertices.height = 0.03,
+        col = fpColors(lines=c("black", "darkgrey"), box=c("black", "darkgrey")),
         grid = TRUE,
         zero = 1, lwd.zero = 1.2,
         boxsize = 0.18, xticks = (0:10/10), xtick.digits=1)
